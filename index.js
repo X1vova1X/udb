@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+app.use(cors({
+    origin: 'https://udirect.rf.gd' // Specify your origin
+}));
+
 // Use express.json() to parse JSON request bodies
 app.use(express.json());
 
