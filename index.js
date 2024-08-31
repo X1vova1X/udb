@@ -9,21 +9,18 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.text());
-
-// Use express.json() to parse JSON request bodies
-app.use(express.json());
 
 // In-memory database
 let database = {};
 
 // POST endpoint to add a new value
 app.post('/values', (req, res) => {
-  const { value } = req.body;
-  const { id } = req.body;
-  const id2 = String({ id });
+  const { value, id } = req.body;
+  if (!value || !id) {
+    return res.status(400).json({ error: 'Value and id are required.' });
+  }
   database[id] = value;
-  res.status(201).json({ id2 });
+  res.status(201).json({ id });
 });
 
 // GET endpoint to retrieve all values
@@ -31,17 +28,23 @@ app.get('/values', (req, res) => {
   res.json(database);
 });
 
+// Clear the database
 app.get('/db/clear', (req, res) => {
   database = {};
-  res.send("DB cleared.")
+  res.send("DB cleared.");
 });
 
+// Set the entire database
 app.post('/db/set', (req, res) => {
-  const body = JSON.stringify(req.body);
-  database = { body };
-  res.send("DB set.")
+  const newDatabase = req.body; // Expecting a JSON object
+  if (typeof newDatabase !== 'object' || Array.isArray(newDatabase)) {
+    return res.status(400).json({ error: 'Database must be an object.' });
+  }
+  database = newDatabase; // Set the entire database
+  res.send("DB set.");
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
