@@ -33,8 +33,8 @@ app.get('/db/clear', (req, res) => {
 });
 
 app.post('/db/set', (req, res) => {
-  const { value } = req.body;
-  database = { value };
+  const body = req.body;
+  database = body;
   res.send("DB set.")
 });
 
