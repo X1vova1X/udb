@@ -7,6 +7,10 @@ app.use(cors({
     origin: 'https://udirect.rf.gd' // Specify your origin
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.text());
+
 // Use express.json() to parse JSON request bodies
 app.use(express.json());
 
