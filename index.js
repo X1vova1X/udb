@@ -28,6 +28,12 @@ app.get('/values', (req, res) => {
 });
 
 app.get('/db/clear', (req, res) => {
+  const { value } = req.body;
+  database = { value };
+  res.send("DB set.")
+});
+
+app.get('/db/set', (req, res) => {
   database = {};
   res.send("DB cleared.")
 });
